@@ -196,7 +196,17 @@ def generate_sentences_time_based(
 
         output_needed = is_output_needed(has_output_started, start_time, lead_time, output_sentences, estimated_time_between_words, deadline_offset)
         if output_needed and use_first_sentence:
-            end_index = len(sentences_on_buffer[0]) if len(sentence_boundaries) == 1 else sentence_boundaries[1][0] #edge case where sentence_boundaries disagrees with nltk.tokenize.sent_tokenize
+            sentence_len = len(sentences_on_buffer[0])
+            boundary_end = sentence_boundaries[0][1] if len(sentence_boundaries) > 0 else sentence_len
+            
+            # Check if there's a significant discrepancy between the tokenizers
+            if abs(sentence_len - boundary_end) <= 2:
+                # Small discrepancy, use precise boundary position
+                end_index = boundary_end
+            else:
+                # Large discrepancy, use sentence length
+                end_index = len(sentences_on_buffer[0])
+            
             yield handle_output(sentences_on_buffer[0], end_index)
         elif output_needed:
             output = current_fragment
