@@ -156,7 +156,7 @@ def generate_sentences_time_based(
             has_output_started = True
         
         end_index = len(output)
-        if sentence_boundary_index != None:
+        if sentence_boundary_index != None and abs(end_index - sentence_boundary_index) <= 3:
             end_index = sentence_boundary_index
         llm_buffer_full = llm_buffer_full[end_index:]
         output_sentences.append(output)
@@ -226,5 +226,6 @@ def generate_sentences_time_based(
     #after all tokens are processed yield whatever is left
     for sentence in nltk.tokenize.sent_tokenize(llm_buffer_full):
         yield sentence
+
 
 
