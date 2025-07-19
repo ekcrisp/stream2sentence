@@ -200,7 +200,7 @@ def generate_sentences_time_based(
             boundary_end = sentence_boundaries[0][1] if len(sentence_boundaries) > 0 else sentence_len
             
             # Check if there's a significant discrepancy between the tokenizers
-            if abs(sentence_len - boundary_end) <= 2:
+            if abs(sentence_len - boundary_end) <= 3:
                 # Small discrepancy, use precise boundary position
                 end_index = boundary_end
             else:
